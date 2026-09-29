@@ -1,0 +1,191 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: #f4f6f8;
+  color: #222;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 16px;
+  margin: 0 0 12px;
+}
+
+h3 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e2e6ea;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.hidden {
+  display: none;
+}
+
+.status-list {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.status-list li {
+  padding: 4px 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  background: #e2e6ea;
+  color: #333;
+}
+
+.badge.ok {
+  background: #d3f9d8;
+  color: #2b8a3e;
+}
+
+.badge.warn {
+  background: #fff3bf;
+  color: #e67700;
+}
+
+.badge.err {
+  background: #ffe3e3;
+  color: #c92a2a;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+select,
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+}
+
+button {
+  padding: 8px 16px;
+  margin-right: 8px;
+  font-size: 14px;
+  border: 1px solid #adb5bd;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: #f1f3f5;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hint {
+  color: #868e96;
+  font-size: 13px;
+}
+
+.error {
+  color: #c92a2a;
+  font-size: 13px;
+  min-height: 1em;
+}
+
+.cap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+pre {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 12px;
+  max-height: 200px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+video {
+  width: 100%;
+  max-height: 320px;
+  background: #000;
+  border-radius: 6px;
+}
+
+canvas {
+  display: block;
+  margin-top: 12px;
+  max-width: 100%;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+}
+
+.meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+
+.meter-track {
+  flex: 1;
+  height: 10px;
+  background: #e9ecef;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0;
+  background: #40c057;
+  transition: width 80ms linear;
+}
+
+#fallback-preview img,
+#fallback-preview video {
+  max-width: 100%;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+#fallback-preview audio {
+  width: 100%;
+  margin-top: 12px;
+}

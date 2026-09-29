@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>摄像头 / 麦克风设备选择</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>摄像头与麦克风选择</h1>
+
+    <section id="env-panel" class="panel">
+      <h2>环境检测</h2>
+      <ul id="env-list" class="status-list"></ul>
+    </section>
+
+    <section id="permission-panel" class="panel">
+      <h2>权限状态</h2>
+      <ul class="status-list">
+        <li>摄像头：<span id="perm-camera" class="badge">未知</span></li>
+        <li>麦克风：<span id="perm-microphone" class="badge">未知</span></li>
+      </ul>
+      <p id="perm-hint" class="hint"></p>
+      <button id="btn-request" type="button">申请摄像头和麦克风权限</button>
+    </section>
+
+    <section id="device-panel" class="panel">
+      <h2>设备选择</h2>
+      <div class="field">
+        <label for="select-camera">摄像头</label>
+        <select id="select-camera"></select>
+      </div>
+      <div class="field">
+        <label for="select-microphone">麦克风</label>
+        <select id="select-microphone"></select>
+      </div>
+      <div class="field">
+        <button id="btn-refresh" type="button">刷新设备列表</button>
+        <button id="btn-stop" type="button">停止预览</button>
+      </div>
+      <p id="device-error" class="error" role="alert"></p>
+    </section>
+
+    <section id="capability-panel" class="panel">
+      <h2>当前设备能力</h2>
+      <div class="cap-grid">
+        <div>
+          <h3>视频</h3>
+          <pre id="cap-video">未开启</pre>
+        </div>
+        <div>
+          <h3>音频</h3>
+          <pre id="cap-audio">未开启</pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="preview-panel" class="panel">
+      <h2>预览</h2>
+      <video id="preview" autoplay playsinline muted></video>
+      <div class="meter">
+        <span>麦克风音量</span>
+        <div class="meter-track"><div id="audio-level" class="meter-fill"></div></div>
+      </div>
+      <div class="field">
+        <button id="btn-snapshot" type="button" disabled>拍照（Canvas）</button>
+      </div>
+      <canvas id="snapshot" width="320" height="240"></canvas>
+    </section>
+
+    <section id="fallback-panel" class="panel hidden">
+      <h2>降级方案：文件上传</h2>
+      <p class="hint">当前环境无法使用摄像头/麦克风，可改用文件上传完成基本操作。</p>
+      <p id="fallback-reason" class="error"></p>
+      <div class="field">
+        <label for="file-input">选择图片 / 视频 / 音频文件</label>
+        <input id="file-input" type="file" accept="image/*,video/*,audio/*">
+      </div>
+      <div id="fallback-preview"></div>
+    </section>
+  </main>
+
+  <script src="js/store.js"></script>
+  <script src="js/media.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
