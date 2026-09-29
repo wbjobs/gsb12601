@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>摄像头与麦克风选择演示</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>摄像头 / 麦克风选择演示</h1>
+    <p class="subtitle">无框架 · MediaDevices · Permissions API · Canvas · IndexedDB</p>
+    <div id="envBanner" class="env-banner" hidden></div>
+  </header>
+
+  <main class="layout">
+    <!-- 左侧：权限与设备 -->
+    <section class="panel" aria-labelledby="controlTitle">
+      <h2 id="controlTitle">权限与设备</h2>
+
+      <div class="action-row">
+        <button id="grantAllBtn" type="button" class="primary">申请摄像头 + 麦克风</button>
+        <button id="refreshBtn" type="button" title="重新枚举设备">重新枚举</button>
+      </div>
+
+      <div class="perm-grid">
+        <article class="perm-card" data-kind="video">
+          <div class="perm-head">
+            <span class="perm-dot" data-role="dot" aria-hidden="true"></span>
+            <strong>摄像头</strong>
+            <span class="perm-state" data-role="state">检测中…</span>
+          </div>
+          <p class="perm-desc" data-role="detail"></p>
+          <div class="perm-actions">
+            <button type="button" data-action="grant">申请权限</button>
+            <button type="button" data-action="stop">关闭视频</button>
+          </div>
+          <label class="device-picker">
+            <span>视频设备</span>
+            <select data-role="select"></select>
+          </label>
+        </article>
+
+        <article class="perm-card" data-kind="audio">
+          <div class="perm-head">
+            <span class="perm-dot" data-role="dot" aria-hidden="true"></span>
+            <strong>麦克风</strong>
+            <span class="perm-state" data-role="state">检测中…</span>
+          </div>
+          <p class="perm-desc" data-role="detail"></p>
+          <div class="perm-actions">
+            <button type="button" data-action="grant">申请权限</button>
+            <button type="button" data-action="stop">关闭音频</button>
+          </div>
+          <label class="device-picker">
+            <span>音频设备</span>
+            <select data-role="select"></select>
+          </label>
+        </article>
+      </div>
+
+      <div class="counts" id="deviceCounts"></div>
+
+      <section class="capabilities">
+        <h3>当前设备能力</h3>
+        <pre id="capabilitiesBox" class="cap-box">暂无活动设备。</pre>
+        <div class="probe-row">
+          <label>
+            测试视频约束
+            <select id="constraintPreset">
+              <option value="1280x720">1280 × 720</option>
+              <option value="1920x1080">1920 × 1080</option>
+              <option value="3840x2160">3840 × 2160 (4K)</option>
+            </select>
+          </label>
+          <button id="applyConstraintBtn" type="button">应用约束</button>
+        </div>
+        <p class="hint">应用约束会在当前摄像头上尝试切换分辨率；能力不支持时会提示并保持原状态。</p>
+      </section>
+    </section>
+
+    <!-- 中间：预览 -->
+    <section class="panel preview-panel" aria-labelledby="previewTitle">
+      <h2 id="previewTitle">实时预览</h2>
+      <div class="video-wrap">
+        <video id="previewVideo" autoplay playsinline muted></video>
+        <div id="previewOverlay" class="preview-overlay">
+          <p>未启动任何设备</p>
+          <p class="hint">点击“申请权限”后在此显示预览。页面加载时不会主动调用摄像头。</p>
+        </div>
+      </div>
+      <canvas id="meterCanvas" width="640" height="28" class="meter" aria-label="麦克风音量表"></canvas>
+      <div class="action-row">
+        <button id="snapshotBtn" type="button">拍照（Canvas）</button>
+        <button id="stopAllBtn" type="button" class="danger">停止所有轨道</button>
+      </div>
+      <div id="snapshotPreview" class="snapshot-preview" hidden>
+        <img id="snapshotImg" alt="最近一次拍照" />
+        <div class="snapshot-actions">
+          <button id="saveSnapshotBtn" type="button">保存到 IndexedDB</button>
+          <button id="discardSnapshotBtn" type="button">丢弃</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 右侧：降级、记录 -->
+    <section class="panel side-panel" aria-labelledby="fallbackTitle">
+      <h2 id="fallbackTitle">降级：文件上传</h2>
+      <p class="hint">权限被拒、无设备或非安全上下文时，基本操作（提供图片 / 视频 / 音频）仍可通过文件上传完成。</p>
+      <div class="upload-grid">
+        <label class="upload-btn">
+          <input type="file" id="imageInput" accept="image/*" hidden />
+          选择图片
+        </label>
+        <label class="upload-btn">
+          <input type="file" id="videoInput" accept="video/*" hidden />
+          选择视频
+        </label>
+        <label class="upload-btn">
+          <input type="file" id="audioInput" accept="audio/*" hidden />
+          选择音频
+        </label>
+      </div>
+      <ul id="uploadList" class="upload-list"></ul>
+
+      <h3>事件记录</h3>
+      <ul id="eventLog" class="event-log" aria-live="polite"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>注意：getUserMedia 需要安全上下文（https 或 localhost）。所有媒体调用均在用户点击后触发。</p>
+  </footer>
+
+  <div id="alertHost" class="alert-host" aria-live="assertive"></div>
+
+  <script src="js/env.js"></script>
+  <script src="js/errors.js"></script>
+  <script src="js/permissions.js"></script>
+  <script src="js/media.js"></script>
+  <script src="js/preview.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/fallback.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
